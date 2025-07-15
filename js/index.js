@@ -144,20 +144,15 @@ document.addEventListener("DOMContentLoaded", function() {
   // Efeito de typing no hero title (opcional)
   const heroTitle = document.querySelector(".hero-title");
   if (heroTitle) {
-    const text = heroTitle.innerHTML;
-    heroTitle.innerHTML = "";
+    // Animação de fade-in mais suave para o título
+    heroTitle.style.opacity = "0";
+    heroTitle.style.transform = "translateY(20px)";
     
-    let i = 0;
-    function typeWriter() {
-      if (i < text.length) {
-        heroTitle.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 50);
-      }
-    }
-    
-    // Inicia o efeito após um pequeno delay
-    setTimeout(typeWriter, 500);
+    setTimeout(() => {
+      heroTitle.style.transition = "all 0.8s ease";
+      heroTitle.style.opacity = "1";
+      heroTitle.style.transform = "translateY(0)";
+    }, 300);
   }
 
   // Smooth scroll para botões do hero
