@@ -144,15 +144,44 @@ document.addEventListener("DOMContentLoaded", function() {
   // Efeito de typing no hero title (opcional)
   const heroTitle = document.querySelector(".hero-title");
   if (heroTitle) {
-    // Animação de fade-in mais suave para o título
-    heroTitle.style.opacity = "0";
-    heroTitle.style.transform = "translateY(20px)";
+    // Animação de digitação
+    const originalHTML = heroTitle.innerHTML;
+    const textToType = "Olá, eu sou Welerson";
+    const highlightWord = "Welerson";
     
-    setTimeout(() => {
-      heroTitle.style.transition = "all 0.8s ease";
-      heroTitle.style.opacity = "1";
-      heroTitle.style.transform = "translateY(0)";
-    }, 300);
+    heroTitle.innerHTML = "";
+    heroTitle.style.opacity = "1";
+    
+    let i = 0;
+    const typingSpeed = 100;
+    
+    function typeWriter() {
+      if (i < textToType.length) {
+        const currentText = textToType.substring(0, i + 1);
+        
+        // Se chegou na palavra que deve ser destacada
+        if (currentText.includes(highlightWord) && i >= textToType.indexOf(highlightWord) + highlightWord.length - 1) {
+          const beforeHighlight = textToType.substring(0, textToType.indexOf(highlightWord));
+          const afterHighlight = textToType.substring(textToType.indexOf(highlightWord) + highlightWord.length);
+          const currentAfter = currentText.substring(textToType.indexOf(highlightWord) + highlightWord.length);
+          
+          heroTitle.innerHTML = beforeHighlight + '<span class="highlight">' + highlightWord + '</span>' + currentAfter;
+        } else {
+          heroTitle.textContent = currentText;
+        }
+        
+        i++;
+        setTimeout(typeWriter, typingSpeed);
+      } else {
+        // Animação finalizada, aplica o HTML final com destaque
+        setTimeout(() => {
+          heroTitle.innerHTML = 'Olá, eu sou <span class="highlight">Welerson</span>';
+        }, 500);
+      }
+    }
+    
+    // Inicia a animação após um pequeno delay
+    setTimeout(typeWriter, 800);
   }
 
   // Smooth scroll para botões do hero
